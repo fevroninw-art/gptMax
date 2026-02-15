@@ -79,10 +79,12 @@ btn.onclick = async () => {{
 def index():
     return Response(HTML, mimetype="text/html")
 
+
 @app.post("/chat")
 def chat():
     data = request.get_json(silent=True) or {}
     question = (data.get("question") or "").strip()
+
     if not question:
         return jsonify({"answer": "Напиши вопрос текстом."}), 400
 
@@ -90,8 +92,11 @@ def chat():
         model=MODEL,
         input=question
     )
-    answer = (resp.output_text or "").strip() or "…"
+
+    answer = (resp.output_text or "").strip() or "..."
     return jsonify({"answer": answer})
+
 
 @app.get("/health")
 def health():
+    return "ok", 200
